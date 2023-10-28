@@ -3,17 +3,50 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Password Genarator</title>
+    <title>Password Generator</title>
     <link rel="stylesheet" href="index.css">
 </head>
 <body>
     <div class="container">
-        <h1>Generate a <br>Random Password</h1> I
+        <h1>Generate a <br><span>Random Password</span></h1> <!-- Remove the extra 'I' character -->
         <div class="display">
-           <input type="text" id="password" placeholder="Password">
-           <img src="images/copy.png" >
+            <input type="text" id="password" placeholder="Password">
+            <img src="images/copy.png"  id="copyButton">
         </div>
-        
+        <button id="generateBtn"><img src="images/generate.png" > Generate Password</button> <!-- Added an ID to the button -->
     </div>
+<script>
+const passwordBox = document.getElementById("password");
+const generateButton = document.getElementById("generateBtn"); // Get the button by ID
+const copyButton = document.getElementById("copyButton"); // Get the copy image by ID
+const length = 12;
+
+const upperCase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+const lowerCase = "abcdefghijklmnopqrstuvwxyz";
+const number = "0123456789"
+const symbol = "@#$%^&*()_+~|{}[]<>/-="
+const allchars = upperCase + lowerCase + number + symbol;
+
+generateButton.addEventListener("click", createPassword); // Add a click event listener
+copyButton.addEventListener("click", CopyPassword);
+function createPassword() {
+    let password = "";
+    
+    password += upperCase[Math.floor(Math.random() * upperCase.length)];
+    password += lowerCase[Math.floor(Math.random() * lowerCase.length)];
+    password += number[Math.floor(Math.random() * number.length)];
+    password += symbol[Math.floor(Math.random() * symbol.length)];
+
+    while (length > password.length){
+        password += allchars[Math.floor(Math.random() * allchars.length)];
+    }
+     
+    passwordBox.value = password;
+}
+function CopyPassword(){
+    passwordBox.select();
+    document.execCommand("copy");
+}
+</script>
 </body>
 </html>
