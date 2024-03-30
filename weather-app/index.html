@@ -11,31 +11,53 @@
 <body>
     <div class="card">
         <div class="search">
-            <input type="text" placeholder="enter city name"
-            spellcheck="false">
-            <button><img src="images/search.png"></button>
+            <input type="text" id="cityInput" placeholder="Enter city name" spellcheck="false">
+            <button onclick="getWeatherData()"><img src="images/search.png"></button>
         </div>
         <div class="weather">
-            <img src="images/rain.png" class="weather-icon">
-            <h1 class="temp">22°c</h1>
-            <h2 class="city">New York</h2> I
+            <img src="" class="weather-icon" id="weatherIcon">
+            <h1 class="temp" id="temperature"></h1>
+            <h2 class="city" id="cityName"></h2>
             <div class="details">
                 <div class="col">
                     <img src="images/humidity.png">
                     <div>
-                        <p class="humidity">50%</p> 
-                        <p>Humidity</p> 
+                        <p class="humidity" id="humidity"></p>
+                        <p>Humidity</p>
                     </div>
-               </div>
-               <div class="col">
-                <img src="images/humidity.png">
+                </div>
+                <div class="col">
+                    <img src="images/wind.png">
                     <div>
-                        <p class="wind">15 km/h</p> 
-                        <p>Wind Speed</p> 
+                        <p class="wind" id="windSpeed"></p>
+                        <p>Wind Speed</p>
                     </div>
                 </div>
             </div>
-        </div>       
+        </div>
     </div>
+
+    <script>
+        // JavaScript code to fetch weather data and update the HTML
+        function getWeatherData() {
+            const apiKey = 'd71981bfd19a0be9217b1e757e4b0ad8'; // Replace with your OpenWeatherMap API key
+            const cityInput = document.getElementById('cityInput').value;
+            const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${cityInput}&appid=${apiKey}&units=metric`;
+
+            fetch(apiUrl)
+                .then(response => response.json())
+                .then(data => {
+                    // Update the HTML elements with the fetched weather data
+                    document.getElementById('weatherIcon').src = `http://openweathermap.org/img/wn/${data.weather[0].icon}.png`;
+                    document.getElementById('temperature').textContent = `${data.main.temp}°C`;
+                    document.getElementById('cityName').textContent = data.name;
+                    document.getElementById('humidity').textContent = `${data.main.humidity}%`;
+                    document.getElementById('windSpeed').textContent = `${data.wind.speed} km/h`;
+                })
+                .catch(error => {
+                    console.error('Error fetching weather data:', error);
+                });
+        }
+    </script>
 </body>
 </html>
